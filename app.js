@@ -18,6 +18,23 @@ app.get("/books", async (req, res) => {
   }
 });
 
+app.post("/books", async (req, res) => {
+  try {
+    const { title, author, year } = req.body;
+
+    const newBook = await Book.create({
+      title,
+      author,
+      year,
+    });
+
+    res.status(201).json(newBook);
+  } catch (error) {
+    console.error("Error creating  books:", error);
+    res.status(500).json({ message: "Failed to create books" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
