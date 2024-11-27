@@ -62,6 +62,25 @@ app.put("/books/:id", async (req, res) => {
   }
 });
 
+app.delete("/books/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deletedRowsCount = await Book.destroy({
+      where: { id },
+    });
+
+    if (deletedRowsCount === 0) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    res.status(200).json({ message: "Book deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting book:", error);
+    res.status(500).json({ message: "Failed to delete book" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
